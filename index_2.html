@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="de">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Happy Birthday 🎂</title>
+    <style>
+        body {
+            text-align: center;
+            background: #ffa47d;
+            font-family: sans-serif;
+        }
+
+        video {
+            width: 60%;
+            border-radius: 12px;
+            margin-top: 30px;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        h1 {
+            color: #d46a6a;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Video 1 (Kerzen an) -->
+    <video id="videoOn" src="lolo\birthday_card_1.mp4" autoplay loop muted></video>
+
+    <!-- Video 2 (Kerzen aus) -->
+    <video id="videoOff" src="lolo\birthday_card_2.mp4" style="display:none;" autoplay loop muted></video>
+
+    <script>
+        navigator.mediaDevices.getUserMedia({ audio: true })
+            .then(stream => {
+                const audioContext = new AudioContext();
+                const source = audioContext.createMediaStreamSource(stream);
+                const analyser = audioContext.createAnalyser();
+                const data = new Uint8Array(analyser.frequencyBinCount);
+                source.connect(analyser);
+
+                const videoOn = document.getElementById('videoOn');
+                const videoOff = document.getElementById('videoOff');
+                let blownOut = false;
+
+                function checkVolume() {
+                    analyser.getByteFrequencyData(data);
+                    let volume = data.reduce((a, b) => a + b) / data.length;
+
+                    // Laut genug = pusten
+                    if (volume > 50 && !blownOut) {
+                        blownOut = true;
+
+                        // Video wechseln
+                        videoOn.style.display = "none";
+                        videoOff.style.display = "block";
+
+                        videoOn.pause();
+                        videoOff.play();
+                    }
+
+                    requestAnimationFrame(checkVolume);
+                }
+
+                checkVolume();
+            })
+            .catch(err => alert("Bitte Mikrofon erlauben, um die Kerzen auszupusten!"));
+    </script>
+
+</body>
+
+</html>
