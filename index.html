@@ -29,10 +29,12 @@
 <body>
 
     <!-- Video 1 (Kerzen an) -->
-    <video id="videoOn" src="lolo\birthday_card_1.mp4" autoplay loop muted></video>
+    <video id="videoOn" src="lolo\birthday_card_1.mp4" autoplay loop muted playsinline
+  webkit-playsinline></video>
 
     <!-- Video 2 (Kerzen aus) -->
-    <video id="videoOff" src="lolo\birthday_card_2.mp4" style="display:none;" autoplay loop muted></video>
+    <video id="videoOff" src="lolo\birthday_card_2.mp4" style="display:none;" autoplay loop muted playsinline
+  webkit-playsinline></video>
 
     <script>
         navigator.mediaDevices.getUserMedia({ audio: true })
@@ -74,3 +76,4 @@
 </body>
 
 </html>
+
